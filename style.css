@@ -1,0 +1,128 @@
+/* Import Font Profesional */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+/* Reset & Background Dasar */
+body {
+    /* Background gradient yang gelap dan premium, seperti layar terminal trading */
+    background: radial-gradient(circle at center, #121212 0%, #000000 100%);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Container Partikel agar tidak menutupi tombol dan konten lainnya */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Pastikan di atas background tapi di bawah konten */
+    top: 0;
+    left: 0;
+}
+
+/* Memastikan Konten Utama di atas partikel */
+.relative.z-10 {
+    z-index: 10;
+    position: relative;
+}
+
+/* Efek Glow & Floating pada Logo */
+.glow-logo {
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.15));
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Style Tombol Glassmorphism Lonjong - Ditingkatkan agar lebih "Forex Premium" */
+.glass-btn {
+    background: rgba(255, 255, 255, 0.015); /* Lebih transparan */
+    backdrop-filter: blur(20px); /* Blur lebih kuat untuk kesan kaca premium */
+    -webkit-backdrop-filter: blur(20px); /* Support Safari */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Bingkai sangat halus */
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Efek Hover Tombol */
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.98); /* Hampir putih solid saat dihover */
+    color: #000;
+    transform: scale(1.02) translateY(-2px);
+    border-color: #ffffff;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2); /* Glow putih saat dihover */
+}
+
+/* Style Ikon Sosial Media (Tetap sama) */
+.social-icon {
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.social-icon:hover {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.15);
+}
+
+/* Sistem Animasi Muncul (Reveal) (Tetap sama) */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+   EFEK LED RUNNING RGB (RAINBOW ANIMATION) - Disesuaikan agar lebih halus
+   ========================================== */
+
+/* 1. Efek Garis LED Running di Bawah Logo */
+.led-rgb-line {
+    background: linear-gradient(90deg, #ff3333, #ffcc00, #33ff33, #33ccff, #ff33ff, #ff3333);
+    background-size: 300% 100%;
+    animation: ledRunning 3s linear infinite;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 25px rgba(255, 0, 255, 0.2);
+}
+
+/* 2. Efek Teks RGB Berjalan pada Huruf L, C, dan Nama Dev */
+.led-rgb-text {
+    background: linear-gradient(90deg, #ff5555, #55ff55, #55ffff, #ff55ff, #ff5555);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ledRunning 4s linear infinite;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* Kunci Animasi Geser Warna (Running Effect) */
+@keyframes ledRunning {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 300% 50%;
+    }
+}
+
+/* Responsif Mobile (Thumb-Friendly) */
+@media (max-width: 640px) {
+    .glass-btn {
+        padding-top: 1.1rem;
+        padding-bottom: 1.1rem;
+    }
+}
