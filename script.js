@@ -15,10 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raf) return;
         raf = requestAnimationFrame(() => {
             raf = null;
-            if (glow) {
-                glow.style.setProperty('--gx', gx + 'px');
-                glow.style.setProperty('--gy', gy + 'px');
-            }
+            if (glow) glow.style.transform = `translate3d(${gx}px, ${gy}px, 0)`;
         });
     }, { passive: true });
 
@@ -37,21 +34,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = cv.getContext('2d');
 
     const STEP = 14;
-    let W, H, dpr, candles = [], pts = [], off = 0;
+    let W = 0, H = 0, dpr = 1, candles = [], pts = [], off = 0;
+    let lineGrad, glowGrad, fillGrad, last = 0, resizeTimer;
 
     const rand = (a, b) => a + Math.random() * (b - a);
 
     function makeCandle(initial) {
         const body = rand(16, 64);
+        const up = Math.random() > 0.42;
+        const a = rand(0.05, 0.16);
         return {
             x: rand(0, W),
             y: initial ? rand(0, H) : H + rand(40, 160),
             w: rand(4, 8),
             body,
             wick: body * rand(1.35, 1.9),
-            up: Math.random() > 0.42,
             vy: rand(0.12, 0.38),
-            a: rand(0.05, 0.16)
+            color: `rgba(${up ? '52,211,153' : '248,113,113'},${a})`
         };
     }
 
@@ -69,12 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = window.innerWidth;
-        H = window.innerHeight;
+        const nw = window.innerWidth, nh = window.innerHeight;
+        if (W && nw === W && Math.abs(nh - H) < 160) return;
+
+        dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        W = nw;
+        H = nh;
         cv.width = W * dpr;
         cv.height = H * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        lineGrad = ctx.createLinearGradient(0, 0, W, 0);
+        lineGrad.addColorStop(0, 'rgba(255,255,255,0)');
+        lineGrad.addColorStop(0.5, 'rgba(255,255,255,0.28)');
+        lineGrad.addColorStop(1, 'rgba(52,211,153,0.6)');
+
+        glowGrad = ctx.createLinearGradient(0, 0, W, 0);
+        glowGrad.addColorStop(0, 'rgba(52,211,153,0)');
+        glowGrad.addColorStop(0.5, 'rgba(52,211,153,0.06)');
+        glowGrad.addColorStop(1, 'rgba(52,211,153,0.2)');
+
+        fillGrad = ctx.createLinearGradient(0, H * 0.5, 0, H);
+        fillGrad.addColorStop(0, 'rgba(52,211,153,0.09)');
+        fillGrad.addColorStop(1, 'rgba(52,211,153,0)');
 
         const count = Math.min(Math.max(Math.round((W * H) / 26000), 16), 52);
         candles = Array.from({ length: count }, () => makeCandle(true));
@@ -83,11 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawCandles() {
+        ctx.lineWidth = 1;
         for (const c of candles) {
-            const rgb = c.up ? '52,211,153' : '248,113,113';
-            ctx.strokeStyle = `rgba(${rgb},${c.a})`;
-            ctx.fillStyle = `rgba(${rgb},${c.a})`;
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = c.color;
+            ctx.fillStyle = c.color;
             ctx.beginPath();
             ctx.moveTo(c.x, c.y - c.wick / 2);
             ctx.lineTo(c.x, c.y + c.wick / 2);
@@ -109,24 +124,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastX = x(pts.length - 1), lastY = pts[pts.length - 1];
         ctx.lineTo(lastX, lastY);
 
-        const sg = ctx.createLinearGradient(0, 0, W, 0);
-        sg.addColorStop(0, 'rgba(255,255,255,0)');
-        sg.addColorStop(0.5, 'rgba(255,255,255,0.28)');
-        sg.addColorStop(1, 'rgba(52,211,153,0.6)');
-        ctx.strokeStyle = sg;
-        ctx.lineWidth = 1.6;
-        ctx.shadowColor = 'rgba(52,211,153,0.5)';
-        ctx.shadowBlur = 12;
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = glowGrad;
+        ctx.lineWidth = 7;
         ctx.stroke();
-        ctx.shadowBlur = 0;
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
 
         ctx.lineTo(lastX, H);
         ctx.lineTo(x(0), H);
         ctx.closePath();
-        const fg = ctx.createLinearGradient(0, H * 0.5, 0, H);
-        fg.addColorStop(0, 'rgba(52,211,153,0.09)');
-        fg.addColorStop(1, 'rgba(52,211,153,0)');
-        ctx.fillStyle = fg;
+        ctx.fillStyle = fillGrad;
         ctx.fill();
     }
 
@@ -136,13 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
         drawLine();
     }
 
-    function tick() {
+    function tick(t) {
+        const k = last ? Math.min((t - last) / 16.667, 3) : 1;
+        last = t;
+
         for (const c of candles) {
-            c.y -= c.vy;
+            c.y -= c.vy * k;
             if (c.y < -120) Object.assign(c, makeCandle(false), { x: rand(0, W) });
         }
-        off += 0.35;
-        if (off >= STEP) {
+        off += 0.35 * k;
+        while (off >= STEP) {
             off -= STEP;
             pts.shift();
             pts.push(nextPoint(pts[pts.length - 1]));
@@ -151,7 +163,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(tick);
     }
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize, 150);
+    });
     resize();
     if (!prefersReduced) requestAnimationFrame(tick);
 })();

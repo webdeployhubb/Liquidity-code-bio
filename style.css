@@ -40,7 +40,6 @@ body {
 
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-/* ---------- Latar belakang ---------- */
 #bg {
     position: fixed;
     inset: 0;
@@ -60,12 +59,12 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
+    background: radial-gradient(closest-side, rgba(var(--oc), .30), rgba(var(--oc), .19) 30%, rgba(var(--oc), .07) 62%, rgba(var(--oc), 0));
     will-change: transform;
 }
-.o1 { width: 440px; height: 440px; top: -140px; left: -120px; background: rgba(52, 211, 153, .32); animation: drift1 18s ease-in-out infinite alternate; }
-.o2 { width: 400px; height: 400px; top: 28%; right: -160px; background: rgba(139, 92, 246, .30); animation: drift2 22s ease-in-out infinite alternate; }
-.o3 { width: 460px; height: 460px; bottom: -200px; left: 12%; background: rgba(56, 189, 248, .24); animation: drift3 20s ease-in-out infinite alternate; }
+.o1 { --oc: 52, 211, 153; width: 660px; height: 660px; top: -250px; left: -230px; animation: drift1 18s ease-in-out infinite alternate; }
+.o2 { --oc: 139, 92, 246; width: 600px; height: 600px; top: 28%; margin-top: -100px; right: -260px; animation: drift2 22s ease-in-out infinite alternate; }
+.o3 { --oc: 56, 189, 248; width: 690px; height: 690px; bottom: -315px; left: 12%; margin-left: -115px; animation: drift3 20s ease-in-out infinite alternate; }
 
 @keyframes drift1 { to { transform: translate(90px, 70px) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(-80px, 60px) scale(.9); } }
@@ -93,8 +92,8 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
     pointer-events: none;
     z-index: 1;
     background: radial-gradient(circle, rgba(255, 255, 255, .07), transparent 62%);
-    transform: translate(var(--gx, -999px), var(--gy, -999px));
-    transition: opacity .4s;
+    transform: translate3d(-999px, -999px, 0);
+    will-change: transform;
 }
 @media (hover: none) { .cursor-glow { display: none; } }
 
@@ -114,7 +113,6 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
             background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: led 5s linear infinite;
-    filter: drop-shadow(0 0 12px rgba(120, 220, 255, .35));
 }
 .led-line {
     background: var(--led);
@@ -214,8 +212,8 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
         inset 0 -8px 14px -8px rgba(255,255,255,.16),
         0 10px 24px -10px rgba(0,0,0,.7),
         0 0 22px -6px var(--c);
-    -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
     transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), color .3s, border-color .3s, box-shadow .35s;
 }
 .social i { position: relative; z-index: 1; filter: drop-shadow(0 0 8px var(--c)); }
@@ -266,17 +264,10 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
         inset 0 -16px 26px -20px rgba(255,255,255,.3),
         0 14px 32px -14px rgba(0,0,0,.8),
         0 0 30px -8px rgba(var(--glow), var(--gl));
-    -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+    --gl: .45;
     transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .4s, filter .3s;
-    animation: breathe 4s ease-in-out infinite;
-}
-.card:nth-child(2) { animation-delay: -1.3s; }
-.card:nth-child(3) { animation-delay: -2.6s; }
-
-@keyframes breathe {
-    0%, 100% { --gl: .3; }
-    50%      { --gl: .65; }
 }
 
 .card::before {
@@ -301,7 +292,6 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
             mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
     opacity: 0;
     transition: opacity .4s;
-    animation: spin 4s linear infinite;
 }
 @keyframes spin { to { --angle: 360deg; } }
 
@@ -353,7 +343,7 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
     outline: none;
 }
 .card:hover::before, .card:focus-visible::before { opacity: 1; }
-.card:hover::after,  .card:focus-visible::after  { opacity: .95; }
+.card:hover::after,  .card:focus-visible::after  { opacity: .95; animation: spin 4s linear infinite; }
 
 .card.reveal.active:active {
     transform: scale(1.06);
@@ -460,10 +450,9 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
 .reveal {
     opacity: 0;
     transform: translateY(22px);
-    filter: blur(6px);
-    transition: opacity .9s cubic-bezier(.23, 1, .32, 1), transform .9s cubic-bezier(.23, 1, .32, 1), filter .9s cubic-bezier(.23, 1, .32, 1);
+    transition: opacity .9s cubic-bezier(.23, 1, .32, 1), transform .9s cubic-bezier(.23, 1, .32, 1);
 }
-.reveal.active { opacity: 1; transform: none; filter: none; }
+.reveal.active { opacity: 1; transform: none; }
 
 .card.reveal.active {
     transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .4s, opacity .9s, filter .3s;
@@ -479,5 +468,5 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
         animation: none !important;
         transition-duration: .01ms !important;
     }
-    .reveal { opacity: 1; transform: none; filter: none; }
+    .reveal { opacity: 1; transform: none; }
 }
