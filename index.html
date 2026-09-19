@@ -1,62 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#05060a">
+    <meta name="description" content="Liquidity Code Indonesia — komunitas, link FTM, dan portofolio.">
+    <meta property="og:title" content="Liquidity Code | Indonesia">
+    <meta property="og:description" content="Komunitas, link FTM, dan portofolio Liquidity Code.">
     <title>Liquidity Code | Indonesia</title>
-    <!-- Tambahkan Tailwind CSS untuk layouting -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome untuk ikon sosial media -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%2305060a'/%3E%3Ctext x='50' y='66' font-size='52' font-weight='800' font-style='italic' text-anchor='middle' fill='%2334d399' font-family='Arial'%3ELC%3C/text%3E%3C/svg%3E">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Link ke file CSS baru yang berisi gaya Forex -->
     <link rel="stylesheet" href="style.css">
+    <noscript><style>.reveal{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center justify-center p-6">
+<body>
 
-    <!-- Container Latar Belakang Animasi -->
-    <div id="particles-js"></div>
-
-    <!-- Konten Utama (Tetap sama) -->
-    <div class="w-full max-w-md text-center relative z-10">
-        <div class="mb-8 reveal">
-            <div class="glow-logo inline-block">
-                <h1 class="text-5xl font-extrabold tracking-tighter italic uppercase select-none">
-                    <span class="led-rgb-text font-black">L</span>iquidity<br>
-                    <span class="led-rgb-text font-black ml-6">C</span>ode
-                </h1>
-                <div class="led-rgb-line w-32 h-[4px] mx-auto mt-4 rounded-full"></div>
-            </div>
-        </div>
-
-        <div class="flex justify-center space-x-8 mb-10 text-2xl reveal">
-            <a href="https://wa.me/6283856344074" target="_blank" class="social-icon hover:text-green-400"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.tiktok.com/@midzzzzzz7?_r=1&_t=ZS-94NcN4EV7Jq" target="_blank" class="social-icon hover:text-gray-300"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.instagram.com/liquidty_code_ind?igsh=MTF1NXZva3JocG1lYQ==" target="_blank" class="social-icon hover:text-pink-500"><i class="fab fa-instagram"></i></a>
-        </div>
-
-        <div class="space-y-4 reveal">
-            <a href="https://chat.whatsapp.com/II28OCPEQogFWtyiYWa7E6?s=cl&p=a&ilr=1" target="_blank" class="glass-btn block w-full py-4 px-6 rounded-full group">
-                <p class="font-bold text-lg group-hover:scale-110 transition-transform">Grup Liquidity code public</p>
-                <p class="text-xs opacity-60">WhatsApp Community - Join free</p>
-            </a>
-            
-            <a href="https://cabinet.firsttrademarkets.com/signup?refferal=6a93abdee12b0" target="_blank" class="glass-btn block w-full py-5 px-6 rounded-full font-bold text-lg">
-                Link FTM
-            </a>
-            
-            <a href="https://liquiditycode.vercel.app/" target="_blank" class="glass-btn block w-full py-5 px-6 rounded-full font-bold text-lg">
-                Portofolio Liquidity code
-            </a>
-        </div>
-
-        <p class="mt-16 text-xs uppercase tracking-widest font-bold reveal led-rgb-text">
-            Khai • 2026
-        </p>
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <div class="aurora" aria-hidden="true">
+        <span class="orb o1"></span>
+        <span class="orb o2"></span>
+        <span class="orb o3"></span>
     </div>
+    <div class="grid-overlay" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
 
-    <!-- Script untuk Partikel -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <!-- Script konfigurasi latar belakang Forex baru -->
+    <main class="wrap">
+
+        <header class="hero reveal">
+            <h1 class="brand">
+                <span class="line"><span class="led-text">L</span>iquidity</span>
+                <span class="line second"><span class="led-text">C</span>ode</span>
+            </h1>
+            <div class="led-line" aria-hidden="true"></div>
+            <p class="pill"><i class="dot"></i>Indonesia</p>
+        </header>
+
+        <nav class="socials reveal" aria-label="Sosial media">
+            <a href="https://wa.me/6283856344074" target="_blank" rel="noopener noreferrer" class="social" style="--c:#25d366" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.tiktok.com/@midzzzzzz7?_r=1&_t=ZS-94NcN4EV7Jq" target="_blank" rel="noopener noreferrer" class="social" style="--c:#e5e7eb" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/liquidty_code_ind?igsh=MTF1NXZva3JocG1lYQ==" target="_blank" rel="noopener noreferrer" class="social" style="--c:#f472b6" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </nav>
+
+        <section class="links" aria-label="Tautan utama">
+            <a href="https://chat.whatsapp.com/II28OCPEQogFWtyiYWa7E6?s=cl&p=a&ilr=1" target="_blank" rel="noopener noreferrer" class="card featured reveal">
+                <span class="shine" aria-hidden="true"></span>
+                <span class="icon" style="--ic:#34d399;--tint:rgba(52,211,153,.14)"><i class="fa-solid fa-users"></i></span>
+                <span class="text">
+                    <span class="title">Grup Liquidity Code Public <em class="badge">Free</em></span>
+                    <span class="sub">WhatsApp Community · Join free</span>
+                </span>
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+
+            <a href="https://cabinet.firsttrademarkets.com/signup?refferal=6a93abdee12b0" target="_blank" rel="noopener noreferrer" class="card reveal">
+                <span class="shine" aria-hidden="true"></span>
+                <span class="icon" style="--ic:#38bdf8;--tint:rgba(56,189,248,.14)"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="text">
+                    <span class="title">Link FTM</span>
+                    <span class="sub">Daftar lewat referral</span>
+                </span>
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+
+            <a href="https://liquiditycode.vercel.app/" target="_blank" rel="noopener noreferrer" class="card reveal">
+                <span class="shine" aria-hidden="true"></span>
+                <span class="icon" style="--ic:#a78bfa;--tint:rgba(167,139,250,.14)"><i class="fa-solid fa-layer-group"></i></span>
+                <span class="text">
+                    <span class="title">Portofolio Liquidity Code</span>
+                    <span class="sub">liquiditycode.vercel.app</span>
+                </span>
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+        </section>
+
+        <footer class="foot reveal">
+            <span class="led-text">Khai • 2026</span>
+        </footer>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>
